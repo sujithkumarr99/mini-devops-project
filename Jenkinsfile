@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/sujithkumarr99/docker-project.git'
+                url: 'https://github.com/sujithkumarr99/mini-devops-project.git'
             }
         }
 
