@@ -18,8 +18,11 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                bat "docker build -t %DOCKER_IMAGE%:%DOCKER_TAG% ."
+             steps {
+                bat '''
+                docker compose build
+                docker images
+                '''
             }
         }
 
@@ -42,14 +45,12 @@ pipeline {
             }
         }
 
-        stage('Deploy Container') {
+        stage('Deploy Containers') {
             steps {
-                bat """
-                docker stop %CONTAINER_NAME% || exit 0
-                docker rm %CONTAINER_NAME% || exit 0
-                docker pull %DOCKER_IMAGE%:%DOCKER_TAG%
-                docker run -d -p 3000:3000 --name %CONTAINER_NAME% %DOCKER_IMAGE%:%DOCKER_TAG%
-                """
+                bat '''
+                docker compose down
+                docker compose up -d
+                '''
             }
         }
     }
